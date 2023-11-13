@@ -1,24 +1,24 @@
 #include "Item.h"
-#include "inventario.h"
 
 //Posibilidad de añadir la opción tirar (el item) e implementar un algortimo de búsqueda para eliminar el objeto
-
+//Añadir una introducción tipo videojuego, ej. bienvenido, hoy haremos tu inventario.... (debe ir más allá en cuanto a funcionalidad)
 int main() {
-    Inventario inventario;
     std::string name;
     int cant, type;
     int o1;
     int opcion=1;
-    Item* item =new Item("Brujula", 1,0);
-    inventario.AgregarItem(item);
+    ItemList<int> Inventory;
+    Inventory.addFirst("Brujula", 1,0);
+
     /*-------Menú-------*/
+    
     while (opcion!=0){
-        std::cout<<"Inventario: "<<std::endl;
+        std::cout<<"\nInventario: "<<std::endl;
         std::cout<<"\t 0. Cerrar\n\t 1. Mostrar Inventario completo\n\t 2. Agregar Item\n\t 3. Ordenar"<<std::endl;
         std::cin>>opcion;
         if (opcion==1)
         {
-            inventario.MostrarInventario();
+            Inventory.print();
         }
         else if (opcion==2)
         {
@@ -28,27 +28,18 @@ int main() {
             std::cin>>cant;
             std::cout<<"¿De que tipo es?\n\t1. Herramienta\n\t2. Utilidad (Arrojadizo)\n\t3. Comida "<<std::endl;
             std::cin>>type;
-            Item* item = new Item(name,cant,type);
-            inventario.AgregarItem(item);
-            std::cout<<"Listo!! Item agregado"<<std::endl;
+            Inventory.add(name,cant,type);
+            std::cout<<"Listo!! Item '"<<name<<"' ha sido agregado\n";
         }
         else if (opcion ==3)
         {
-            inventario.SortTipo();
-            inventario.MostrarInventario();
+            Inventory.Insertionsort();
 
         }
-        else if (opcion>3)
+        else if (opcion>3||opcion<0)
         {
-            std::cout<<"Opcion inválida, favor de escoger otra"<<std::endl;
+            std::cout<<"Opcion no valida, favor de escoger otra"<<std::endl;
         }
-        else if (opcion<0)
-        {
-            std::cout<<"Opcion inválida, favor de escoger otra"<<std::endl;
-        }
-        
     }
-    delete item;
-
     return 0;
 }
