@@ -10,11 +10,11 @@ Matrícula: A01705408
 
 ## Competencias
 ### SICT0301 - Evaluación del problema
-Hace un análisis de complejidad correcto y completo para los algoritmos de ordenamiento usados en el programa.
+#### Hace un análisis de complejidad correcto y completo para los algoritmos de ordenamiento usados en el programa.
 - 
-Hace un análisis de complejidad correcto y completo todas las estructuras de datos y cada uno de sus usos en el programa
+#### Hace un análisis de complejidad correcto y completo todas las estructuras de datos y cada uno de sus usos en el programa
 - 
-Hace un análisis de complejidad correcto y completo para todos los demás componentes del programa y determina la complejidad final del programa.
+#### Hace un análisis de complejidad correcto y completo para todos los demás componentes del programa y determina la complejidad final del programa.
 - 
 
 ### SICT0302 - Toma de decisiones
