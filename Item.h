@@ -5,8 +5,8 @@
 #include <string>
 #include <sstream>
 
-//NO SE HA IMPLEMENTADO PRINT()
 //NO SE HA IMPLEMENTADO INSERTIONSORT()
+// IMPLEMENTAR UN MAPA Y CREAR 3 LISTAS LIGADAS, NOMBRE, CANTIDAD Y PRIORIDAD
 
 template <class T> class ItemLink;
 template <class T> class ItemList;
@@ -16,6 +16,7 @@ class ItemLink{
     private:
 
     ItemLink(std::string);
+	ItemLink(std::string, T,T);
 	ItemLink(std::string, T, T, ItemLink<T>*, ItemLink<T>*);
 	ItemLink(const ItemLink<T>&);
 
@@ -35,7 +36,10 @@ template <class T>
 ItemLink<T>::ItemLink(std::string val) : value(val), cantidad(1),prioridad(1) ,previous(0), next(0) {}
 
 template <class T>
-ItemLink<T>::ItemLink(std::string val, T quantity, T priority, ItemLink *prev, ItemLink* nxt) : value(val), previous(prev), next(nxt), cantidad(1) {}
+ItemLink<T>::ItemLink(std::string val, T quantity, T type) : value(val), cantidad(quantity),prioridad(type) ,previous(0), next(0) {}
+
+template <class T>
+ItemLink<T>::ItemLink(std::string val, T quantity, T priority, ItemLink *prev, ItemLink* nxt) : value(val), previous(prev), next(nxt), prioridad(priority),cantidad(quantity) {}
 
 template <class T>
 ItemLink<T>::ItemLink(const ItemLink<T> &source) : value(source.value), previous(source.previous), next(source.next), cantidad(source.cantidad), prioridad(source.prioridad) {}
@@ -63,7 +67,8 @@ class ItemList{
 	bool empty() const;
 	void clear();
 
-	void print(); //NO HA SIDO IMPLEMENTADO
+	void print();
+	void printContrario();
 	void operator= (const ItemList&);
 
 
@@ -73,7 +78,9 @@ class ItemList{
 	T    remove(int);
 	bool removeFirstOcurrence(T);
 	bool removeLastOcurrence(T);
-	void Insertionsort();
+
+	void swap(ItemLink<T>* first, ItemLink<T>* second);
+	void Sort();
 
 private:
 	ItemLink<T> *head;
@@ -82,12 +89,31 @@ private:
 };
 
 template <class T>
-void ItemList<T>::print(){
+void ItemList<T>::printContrario(){
+	ItemLink<T> *p;
+	p = tail;
+	while (p != 0) {
+		std::cout<<"\nNombre: "<< p->value<<"\n";
+		std::cout<<"Cantidad: "<< p->cantidad<<"\n";
+		if (p->prioridad==1){
+			std::cout<<"Herramienta\n";
+		}
+		else if(p->prioridad==2){
+			std::cout<<"Utilidad\n";
+		}
+		else if (p->prioridad==3){
+			std::cout<<"Comida\n";
+		}
+		p = p->previous;
+	}
+}
 
+template <class T>
+void ItemList<T>::print(){
 	ItemLink<T> *p;
 	p = head;
 	while (p != 0) {
-		std::cout<<"Nombre: "<< p->value<<"\n";
+		std::cout<<"\nNombre: "<< p->value<<"\n";
 		std::cout<<"Cantidad: "<< p->cantidad<<"\n";
 		if (p->prioridad==1){
 			std::cout<<"Herramienta\n";
@@ -100,14 +126,60 @@ void ItemList<T>::print(){
 		}
 		p = p->next;
 	}
-} // SIN IMPLEMENTAR
+}
 
 template <class T>
-void ItemList<T>::Insertionsort(){ //SIN IMPLEMENTAR
-	if (head == 0 || head->next == 0) {
-        // La lista está vacía o tiene un solo elemento, ya está "ordenada".
-        return;
+void ItemList<T>::swap(ItemLink<T>* first, ItemLink<T>* second){
+	int data = first->prioridad;
+	first->prioridad=second->prioridad;
+	second->prioridad=data;
+	data = first->cantidad;
+	first->cantidad=second->cantidad;
+	second->cantidad=data;
+	std::string name= first->value;
+	first->value=second->value;
+	second->value=name;
+	
+}
+
+template <class T>
+void ItemList<T>::Sort() {
+    ItemLink<T> *p, *q;
+    T tempData;
+    std::string tempName;
+    bool swapped;
+
+    if (head == nullptr || head->next == nullptr) {
+        return; // Lista vacía o con un solo elemento, ya está "ordenada".
     }
+
+    do {
+        swapped = false;
+        p = head;
+
+        while (p->next != nullptr) {
+            if (p->prioridad > p->next->prioridad) {
+                // Intercambiar los datos de los nodos
+                tempData = p->cantidad;
+                p->cantidad = p->next->cantidad;
+                p->next->cantidad = tempData;
+
+                tempData = p->prioridad;
+                p->prioridad = p->next->prioridad;
+                p->next->prioridad = tempData;
+
+                tempName = p->value;
+                p->value = p->next->value;
+                p->next->value = tempName;
+
+                swapped = true;
+            }
+            p = p->next;
+        }
+        q = p;
+    } while (swapped);
+
+    tail = q; // Actualizar la cola de la lista
 }
 
 template <class T>
@@ -171,7 +243,7 @@ template <class T>
 void ItemList<T>::add(std::string val, T quantity, T priority){
 	ItemLink<T> *newLink;
 
-	newLink = new ItemLink<T>(val);
+	newLink = new ItemLink<T>(val, quantity, priority);
 	if (newLink == 0) {
 		std::cout<<"\n===|===|No hay memoria|===|===\n";
 	}
@@ -220,7 +292,6 @@ T ItemList<T>::get(int index) const {
 	if (index == 0) {
 		return getFirst();
 	}
-
 	p = head;
 	pos = 0;
 	while (pos != index) {
