@@ -5,9 +5,6 @@
 #include <string>
 #include <sstream>
 
-//NO SE HA IMPLEMENTADO INSERTIONSORT()
-// IMPLEMENTAR UN MAPA Y CREAR 3 LISTAS LIGADAS, NOMBRE, CANTIDAD Y PRIORIDAD
-
 template <class T> class ItemLink;
 template <class T> class ItemList;
 
@@ -79,7 +76,6 @@ class ItemList{
 	bool removeFirstOcurrence(T);
 	bool removeLastOcurrence(T);
 
-	void swap(ItemLink<T>* first, ItemLink<T>* second);
 	void Sort();
 
 private:
@@ -94,7 +90,6 @@ void ItemList<T>::printContrario(){
 	p = tail;
 	while (p != 0) {
 		std::cout<<"\nNombre: "<< p->value<<"\n";
-		std::cout<<"Cantidad: "<< p->cantidad<<"\n";
 		if (p->prioridad==1){
 			std::cout<<"Herramienta\n";
 		}
@@ -104,6 +99,11 @@ void ItemList<T>::printContrario(){
 		else if (p->prioridad==3){
 			std::cout<<"Comida\n";
 		}
+		if (p->prioridad!=0)
+		{
+			std::cout<<"Cantidad: "<< p->cantidad<<"\n";
+		}
+		
 		p = p->previous;
 	}
 }
@@ -114,7 +114,6 @@ void ItemList<T>::print(){
 	p = head;
 	while (p != 0) {
 		std::cout<<"\nNombre: "<< p->value<<"\n";
-		std::cout<<"Cantidad: "<< p->cantidad<<"\n";
 		if (p->prioridad==1){
 			std::cout<<"Herramienta\n";
 		}
@@ -124,22 +123,12 @@ void ItemList<T>::print(){
 		else if (p->prioridad==3){
 			std::cout<<"Comida\n";
 		}
+		if (p->prioridad!=0)
+		{
+			std::cout<<"Cantidad: "<< p->cantidad<<"\n";
+		}
 		p = p->next;
 	}
-}
-
-template <class T>
-void ItemList<T>::swap(ItemLink<T>* first, ItemLink<T>* second){
-	int data = first->prioridad;
-	first->prioridad=second->prioridad;
-	second->prioridad=data;
-	data = first->cantidad;
-	first->cantidad=second->cantidad;
-	second->cantidad=data;
-	std::string name= first->value;
-	first->value=second->value;
-	second->value=name;
-	
 }
 
 template <class T>
