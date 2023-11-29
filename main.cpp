@@ -9,14 +9,14 @@ int main() {
     int opcion=1;
     ItemList<int> Inventory;
     std::ifstream File("Archivo.txt");
-
-    /*-------Menú-------*/
-    while (opcion!=0){
-        std::cout<<"Extrayendo...\n";
+    std::cout<<"Extrayendo...\n";
         while (File>>name>>cant>>type){
             Inventory.add(name,cant,type);
         };
         std::cout<<"Terminado\n";
+
+    /*-------Menú-------*/
+    while (opcion!=0){
         std::cout<<"\nInventario: "<<std::endl;
         std::cout<<"\t 0. Cerrar\n\t 1. Mostrar Inventario completo\n\t 2. Agregar Item\n\t 3. Ordenar"<<std::endl;
         std::cin>>opcion;
@@ -50,10 +50,29 @@ int main() {
         {
             std::cout<<"A partir de que atributo lo quieres ordenar?\n\t1.Nombre (Alfabéticamente)\n\t2. Cantidad\n\t3. Tipo\n Selecccion: ";
             std::cin>>orden;
-            Inventory.Sort();
+            if (orden == 1)
+            {
+                Inventory.SortAlfabetic();
+            }
+            if (orden==2)
+            {
+                Inventory.SortQuant();
+            }
+            if (orden==3)
+            {
+                Inventory.SortPriority();
+            }
+            
+            
 
         }
-        else if (opcion>3||opcion<0)
+        else if (opcion==4)
+        {
+            std::cout<<"Escriba el nombre a eliminar";
+            
+        }
+        
+        else if (opcion>4||opcion<0)
         {
             std::cout<<"Opcion no valida, favor de escoger otra"<<std::endl;
         }
