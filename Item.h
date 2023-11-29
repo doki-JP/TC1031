@@ -73,10 +73,10 @@ class ItemList{
 	int  indexOf(T) const;
 	int  lastIndexOf(T) const;
 	T    remove(int);
-	bool removeFirstOcurrence(T);
-	bool removeLastOcurrence(T);
 
-	void Sort();
+	void SortAlfabetic();
+	void SortQuant();
+	void SortPriority();
 
 private:
 	ItemLink<T> *head;
@@ -132,7 +132,85 @@ void ItemList<T>::print(){
 }
 
 template <class T>
-void ItemList<T>::Sort() {
+void ItemList<T>::SortQuant() {
+    ItemLink<T> *p, *q;
+    T tempData;
+    std::string tempName;
+    bool swapped;
+
+    if (head == nullptr || head->next == nullptr) {
+        return; // Lista vacía o con un solo elemento, ya está "ordenada".
+    }
+
+    do {
+        swapped = false;
+        p = head;
+
+        while (p->next != nullptr) {
+            if (p->cantidad > p->next->cantidad) {
+                // Intercambiar los datos de los nodos
+                tempData = p->cantidad;
+                p->cantidad = p->next->cantidad;
+                p->next->cantidad = tempData;
+
+                tempData = p->prioridad;
+                p->prioridad = p->next->prioridad;
+                p->next->prioridad = tempData;
+
+                tempName = p->value;
+                p->value = p->next->value;
+                p->next->value = tempName;
+
+                swapped = true;
+            }
+            p = p->next;
+        }
+        q = p;
+    } while (swapped);
+    tail = q; // Actualizar la cola de la lista
+}
+
+template <class T>
+void ItemList<T>::SortAlfabetic() {
+    ItemLink<T> *p, *q;
+    T tempData;
+    std::string tempName;
+    bool swapped;
+
+    if (head == nullptr || head->next == nullptr) {
+        return; // Lista vacía o con un solo elemento, ya está "ordenada".
+    }
+
+    do {
+        swapped = false;
+        p = head;
+
+        while (p->next != nullptr) {
+            if (p->value > p->next->value) {
+                // Intercambiar los datos de los nodos
+                tempData = p->cantidad;
+                p->cantidad = p->next->cantidad;
+                p->next->cantidad = tempData;
+
+                tempData = p->prioridad;
+                p->prioridad = p->next->prioridad;
+                p->next->prioridad = tempData;
+
+                tempName = p->value;
+                p->value = p->next->value;
+                p->next->value = tempName;
+
+                swapped = true;
+            }
+            p = p->next;
+        }
+        q = p;
+    } while (swapped);
+    tail = q; // Actualizar la cola de la lista
+}
+
+template <class T>
+void ItemList<T>::SortPriority() {
     ItemLink<T> *p, *q;
     T tempData;
     std::string tempName;
@@ -167,7 +245,6 @@ void ItemList<T>::Sort() {
         }
         q = p;
     } while (swapped);
-
     tail = q; // Actualizar la cola de la lista
 }
 
@@ -248,30 +325,6 @@ void ItemList<T>::add(std::string val, T quantity, T priority){
 }
 
 template <class T>
-T ItemList<T>::removeFirst(){
-	T val;
-	ItemLink<T> *p;
-
-	if (empty()) {
-		std::cout<<"\n===|===|No existe el elemento|===|===\n";
-	}
-	p = head;
-	val = p->value;
-
-	if (head == tail) {
-		head = 0;
-		tail = 0;
-	} else {
-		head = p->next;
-		p->next->previous = 0;
-	}
-	delete p;
-	size--;
-
-	return val;
-}
-
-template <class T>
 T ItemList<T>::get(int index) const {
 	int pos;
 	ItemLink<T> *p;
@@ -339,14 +392,6 @@ T ItemList<T>::remove(int index) {
 	T val;
 	ItemLink<T> *p;
 
-	if (index < 0 || index >= size) {
-		std::cout<<"===|===|Indice no valido|===|===\n";
-	}
-
-	if (index == 0) {
-		return removeFirst();
-	}
-
 	p = head;
 	pos = 0;
 	while (pos != index) {
@@ -364,64 +409,6 @@ T ItemList<T>::remove(int index) {
 	delete p;
 
 	return val;
-}
-
-template <class T>
-bool ItemList<T>::removeFirstOcurrence(T val) {
-	ItemLink<T> *p;
-
-	p = head;
-	while (p != 0) {
-		if (p->value == val) {
-			break;
-		}
-		p = p->next;
-	}
-
-	if (p != 0) {
-		if (p->previous == 0) {
-			head = p->next;
-			p->next->previous = 0;
-		} else {
-			p->previous->next = p->next;
-			if (p->next != 0) {
-				p->next->previous = p->previous;
-			}
-		}
-		size--;
-		return true;
-	}
-
-	return false;
-}
-
-template <class T>
-bool ItemList<T>::removeLastOcurrence(T val) {
-	ItemLink<T> *p;
-
-	p = tail;
-	while (p != 0) {
-		if (p->value == val) {
-			break;
-		}
-		p = p->previous;
-	}
-
-	if (p != 0) {
-		if (p->previous == 0) {
-			head = p->next;
-			p->next->previous = 0;
-		} else {
-			p->previous->next = p->next;
-			if (p->next != 0) {
-				p->next->previous = p->previous;
-			}
-		}
-		size--;
-		return true;
-	}
-
-	return false;
 }
 
 template <class T>
