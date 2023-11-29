@@ -61,18 +61,9 @@ int main() {
             if (orden==3)
             {
                 Inventory.SortPriority();
-            }
-            
-            
-
+            }        
         }
-        else if (opcion==4)
-        {
-            std::cout<<"Escriba el nombre a eliminar";
-            
-        }
-        
-        else if (opcion>4||opcion<0)
+        else if (opcion>3||opcion<0)
         {
             std::cout<<"Opcion no valida, favor de escoger otra"<<std::endl;
         }
