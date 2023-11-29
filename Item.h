@@ -387,31 +387,6 @@ ItemList<T>::ItemList(const ItemList<T> &source){
 }
 
 template <class T>
-T ItemList<T>::remove(int index) {
-	int pos;
-	T val;
-	ItemLink<T> *p;
-
-	p = head;
-	pos = 0;
-	while (pos != index) {
-		p = p->next;
-		pos++;
-	}
-
-	val = p->value;
-	p->previous->next = p->next;
-	if (p->next != 0) {
-		p->next->previous = p->previous;
-	}
-	size--;
-
-	delete p;
-
-	return val;
-}
-
-template <class T>
 void ItemList<T>::operator=(const ItemList<T> &source){
 	ItemLink<T> *p, *q;
 
