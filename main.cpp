@@ -1,4 +1,5 @@
 #include "Item.h"
+#include <fstream>
 
 //Posibilidad de añadir la opción tirar (el item) e implementar un algortimo de búsqueda para eliminar el objeto
 //Añadir una introducción tipo videojuego, ej. bienvenido, hoy haremos tu inventario.... (debe ir más allá en cuanto a funcionalidad)
@@ -7,10 +8,15 @@ int main() {
     int cant, type, orden, menu;
     int opcion=1;
     ItemList<int> Inventory;
-    Inventory.addFirst("Brujula", 1,0);
+    std::ifstream File("Archivo.txt");
 
     /*-------Menú-------*/
     while (opcion!=0){
+        std::cout<<"Extrayendo...\n";
+        while (File>>name>>cant>>type){
+            Inventory.add(name,cant,type);
+        };
+        std::cout<<"Terminado\n";
         std::cout<<"\nInventario: "<<std::endl;
         std::cout<<"\t 0. Cerrar\n\t 1. Mostrar Inventario completo\n\t 2. Agregar Item\n\t 3. Ordenar"<<std::endl;
         std::cin>>opcion;
