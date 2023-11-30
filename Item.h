@@ -1,6 +1,20 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+/*
+Referencias: en este proyecto existe una funciones que no son de mi autoría, que es el sort utilizado, 
+se modificó para que se pudiera utilizar de acuerdo a las necesidades de mi proyecto mas no fue un cambio radical, es por esto que los
+3 sorts dentro del proyecto tienen la misma estructura.
+Según varias universidades e instituciones, referenciar un código debe de ser de la siguiente manera: Autor, Fecha de publicación, 
+Título, versión, tipo y la url del código.
+
+Referencia: ckebar, 5/Nov/2019, SO58573297 Initial solution of bubblesort with re-wiring of the double-linked list, versión desconocida
+recuperado el 29 de Noviembre de 2023 de: https://github.com/ckebar/SO58573297
+
+Referencia: University of Cincinatti (n.d.). Research guides: Citing your sources: citing computer code. https://guides.libraries.uc.edu/citing/code
+
+*/
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -60,7 +74,7 @@ class ItemList{
 	bool searchName(std::string);
 	void filterType(T);
 
-	void swapPointers(ItemLink<T>* p1, ItemLink<T>* p2);
+	//void swapPtr(ItemLink<T>* p1, ItemLink<T>* p2);
 	void sortAlfabetic();
 	void sortQuant();
 	void sortPriority();
@@ -146,123 +160,137 @@ void ItemList<T>::print(){
 		p = p->next;
 	}
 }
-/*------------------Código de Diego Isaac Fuentes Juvera con modificaciones muy ligeras------------------*/
+
+//----------------Obtenido mediante investigación, este código NO es de mi autoría, sino que lo referencio para que se conozca el origen (abajo)
 template <class T>
-void ItemList<T>::swapPointers(ItemLink<T>* p1, ItemLink<T>* p2) {
-    // Intercambiar las direcciones de los dos Pokémon utilizando intercambio de apuntadores
-    ItemLink<T> *p;
-		if (p1 == p2) {
-			return;  // No se necesita intercambiar el mismo nodo
-		}
-
-		if (head == nullptr || head->next == nullptr) {
-			return; // Lista vacía o con un solo elemento, ya está "ordenada".
-		}
-
-		p = p1->next;
-		p1->next = p2->next;
-		p2->next = p;
-
-		if (p1->next != NULL){
-			p1->next->previous = p1;
-		}
-		if (p2->next != NULL){
-			p2->next->previous = p2;
-		}
-
-
-		p = p1->previous;
-		p1->previous = p2->previous;
-		p2->previous = p;
-
-		if (p1->previous != NULL){
-			p1->previous->next = p1;
-		}
-		if (p2->previous != NULL){
-			p2->previous->next = p2;
-		}
-
-		if(p1 == head){
-			head = p2;
-		}
-		else if (p2 == head){
-			head = p1;
-		};
-
-		if(p1 == tail){
-			tail = p2;
-		}
-		else if (p2 == tail){
-			tail = p1;
-		};
-	}
-/*------------------Fin del código de diego------------------*/
-
-template <class T>
-void ItemList<T>::sortQuant() { //O(2n^3) hay 3 for's anidados, resultado en la n^3, dentro del segundo for hay otros dos,
-  ItemLink<T>* p1;				// por eso se le asigna el 2n.
-  ItemLink<T>* p2;
-  p1 = head;
-  p2 = p1->next;
-  for(int i = 0; i <=size; i++){ 
-    for (int f = 0; f <(size-i-1); f++ ) {
-			p1 = head;
-			for (int k = 0; k<i; k++){
-				p1 = p1->next;
+void ItemList<T>::sortQuant() {//bubblesort() - O(n)
+bool is_sorted = false;
+	ItemLink<T> *temp = head;
+	while (!is_sorted)
+	{
+		is_sorted = true;
+		temp = head;
+		while (temp->next != NULL)
+		{
+			if(temp->next->cantidad < temp->cantidad)
+			{
+				is_sorted = false;
+				if(temp == head)
+				{
+					//temp->prev->next = temp->next; // 1. (impossible)
+					temp->next->previous = NULL;         // 2.
+					head = temp->next;
+				}
+				else
+				{
+					temp->previous->next = temp->next;   // 1.
+					temp->next->previous = temp->previous;   // 2.
+				}
+				temp->previous = temp->next;             // 3.
+				if(temp->next == tail)
+				{
+					temp->next = NULL;               // 4.
+					tail = temp;
+					//temp->next->prev = temp2;      // 5. (impossible)
+				}
+				else
+				{
+					temp->next = temp->next->next;   // 4.
+					temp->next->previous = temp;         // 5.
+				}
+				temp->previous->next = temp;             // 6.
+				temp = temp->previous;
 			}
-			p2 = p1->next;
-			for (int m = 0; m<f; m++){
-				p2 = p2->next;
-			}
-      if (p1->cantidad > p2->cantidad) {
-        swapPointers(p1, p2);
-  		}
+			temp = temp->next;
 		}
 	}
 }
+//----------https://stackoverflow.com/questions/58573297/bubble-sort-doubly-link-list
 
 template <class T>
 void ItemList<T>::sortAlfabetic() {
-  ItemLink<T>* p1;
-  ItemLink<T>* p2;
-  p1 = head;
-  p2 = p1->next;
-  for(int i = 0; i <=size; i++){
-    for (int f = 0; f <(size-i-1); f++ ) {
-			p1 = head;
-			for (int k = 0; k<i; k++){
-				p1 = p1->next;
+bool is_sorted = false;
+	ItemLink<T> *temp = head;
+	while (!is_sorted)
+	{
+		is_sorted = true;
+		temp = head;
+		while (temp->next != NULL)
+		{
+			if(temp->next->value < temp->value)
+			{
+				is_sorted = false;
+				if(temp == head)
+				{
+					//temp->prev->next = temp->next; // 1. (impossible)
+					temp->next->previous = NULL;         // 2.
+					head = temp->next;
+				}
+				else
+				{
+					temp->previous->next = temp->next;   // 1.
+					temp->next->previous = temp->previous;   // 2.
+				}
+				temp->previous = temp->next;             // 3.
+				if(temp->next == tail)
+				{
+					temp->next = NULL;               // 4.
+					tail = temp;
+					//temp->next->prev = temp2;      // 5. (impossible)
+				}
+				else
+				{
+					temp->next = temp->next->next;   // 4.
+					temp->next->previous = temp;         // 5.
+				}
+				temp->previous->next = temp;             // 6.
+				temp = temp->previous;
 			}
-			p2 = p1->next;
-			for (int m = 0; m<f; m++){
-				p2 = p2->next;
-			}
-      if (p1->value > p2->value) {
-        swapPointers(p1, p2);
-  		}
+			temp = temp->next;
 		}
 	}
 }
 
 template <class T>
 void ItemList<T>::sortPriority() {
-  ItemLink<T>* p1;
-  ItemLink<T>* p2;
-  p1 = head;
-  p2 = p1->next;
-  for(int i = 0; i <=size; i++){
-    for (int f = 0; f <(size-i-1); f++ ) {
-			p1 = head;
-			for (int k = 0; k<i; k++){
-				p1 = p1->next;
+bool is_sorted = false;
+	ItemLink<T> *temp = head;
+	while (!is_sorted)
+	{
+		is_sorted = true;
+		temp = head;
+		while (temp->next != NULL)
+		{
+			if(temp->next->prioridad < temp->prioridad)
+			{
+				is_sorted = false;
+				if(temp == head)
+				{
+					//temp->prev->next = temp->next; // 1. (impossible)
+					temp->next->previous = NULL;         // 2.
+					head = temp->next;
+				}
+				else
+				{
+					temp->previous->next = temp->next;   // 1.
+					temp->next->previous = temp->previous;   // 2.
+				}
+				temp->previous = temp->next;             // 3.
+				if(temp->next == tail)
+				{
+					temp->next = NULL;               // 4.
+					tail = temp;
+					//temp->next->prev = temp2;      // 5. (impossible)
+				}
+				else
+				{
+					temp->next = temp->next->next;   // 4.
+					temp->next->previous = temp;         // 5.
+				}
+				temp->previous->next = temp;             // 6.
+				temp = temp->previous;
 			}
-			p2 = p1->next;
-			for (int m = 0; m<f; m++){
-				p2 = p2->next;
-			}
-      if (p1->prioridad > p2->prioridad) {
-        swapPointers(p1, p2);
-  		}
+			temp = temp->next;
 		}
 	}
 }
