@@ -8,17 +8,21 @@ int main() {
     int cant, type, orden, menu;
     int opcion=1;
     ItemList<int> Inventory;
+    
     std::ifstream File("Archivo.txt");
+    
     std::cout<<"Extrayendo...\n";
-        while (File>>name>>cant>>type){
-            Inventory.add(name,cant,type);
-        };
-        std::cout<<"Terminado\n";
+    
+    while (File>>name>>cant>>type){
+        Inventory.add(name,cant,type);
+    };
+    std::cout<<"Terminado\n";
+    File.close();
 
     /*-------Menú-------*/
     while (opcion!=0){
         std::cout<<"\nInventario: "<<std::endl;
-        std::cout<<"\t 0. Cerrar\n\t 1. Mostrar Inventario completo\n\t 2. Agregar Item\n\t 3. Ordenar"<<std::endl;
+std::cout<<"\t 0. Cerrar\n\t 1. Mostrar Inventario completo\n\t 2. Agregar Item\n\t 3. Ordenar\n\t 4. Ajustes\n\t"<<std::endl;
         std::cin>>opcion;
         if (opcion==1)
         {
@@ -44,26 +48,62 @@ int main() {
             std::cout<<"¿De que tipo es?\n\t1. Herramienta\n\t2. Utilidad (Arrojadizo)\n\t3. Comida "<<std::endl;
             std::cin>>type;
             Inventory.add(name,cant,type);
+            std::ofstream File("Archivo.txt",std::ios::app);
+            if(File){
+                File<<"\n"<<name<<" "<<cant<<" "<<type;
+            }
+            File.close();
             std::cout<<"Listo!! Item '"<<name<<"' ha sido agregado\n";
         }
         else if (opcion ==3)
         {
-            std::cout<<"A partir de que atributo lo quieres ordenar?\n\t1.Nombre (Alfabéticamente)\n\t2. Cantidad\n\t3. Tipo\n Selecccion: ";
+            std::cout<<"A partir de que atributo lo quieres ordenar?\n\t1.Nombre (Alfabeticamente)\n\t2. Cantidad\n\t3. Tipo\n Selecccion: ";
             std::cin>>orden;
             if (orden == 1)
             {
-                Inventory.SortAlfabetic();
+                Inventory.sortAlfabetic();
             }
             if (orden==2)
             {
-                Inventory.SortQuant();
+                Inventory.sortQuant();
             }
             if (orden==3)
             {
-                Inventory.SortPriority();
+                Inventory.sortPriority();
             }        
         }
-        else if (opcion>3||opcion<0)
+        else if(opcion==4){
+            std::cout<<"\t 1. Buscar un objeto (Nombre)\n\t 2. Mostrar segun 1 tipo\n\t 3. Elminar progreso\n:\t";
+            std::cin>>menu;
+            if (menu==1){
+                std::cout<<"Segun que nombre quiere buscar?: ";
+                std::cin>>name;
+                if(Inventory.searchName(name)){
+                    std::cout<<"Si existe el elemento"<<std::endl;
+                }
+            }
+            else if(menu==2){
+                std::cout<<"Segun que tipo quiere buscar?: ";
+                std::cin>>type;
+                Inventory.filterType(type);
+            }
+            else if(menu==3){
+                std::cout<<"ESTA OPCION ES PERMANENTE, ELIMINARA TODOS LOS OBJETOS DEL INVENTARIO, DESEA CONTINUAR?\n 1. SI\n2. NO";
+                std::cin>>orden;
+                if(orden==1){
+                    std::cout<<"ULTIMA OPORTUNIDAD, ESTAS SEGURO?\n1. SI\n2. NO";
+                    std::cin>>orden;
+                    if (orden==1){
+                        std::cout<<"No te arrepientas...";
+                        Inventory.clear();
+                        std::ofstream File("Archivo.txt");
+                        File.close();
+                        std::cout<<"Los datos han sido borrados de forma exitosa.";
+                    }
+                }
+            }
+        }
+        else if (opcion>4||opcion<0)
         {
             std::cout<<"Opcion no valida, favor de escoger otra"<<std::endl;
         }
