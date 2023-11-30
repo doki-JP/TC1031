@@ -24,9 +24,6 @@ class ItemLink{
 	ItemLink<T> *next;
 
 	friend class ItemList<T>;
-
-    public:
-    
 };
 
 template <class T>
@@ -50,14 +47,6 @@ class ItemList{
 
 	void addFirst(std::string, T, T);
 	void add(std::string,T,T);
-
-
-	T    getFirst() const ;
-	T    get(int) const;
-	T	 getLast() const ;
-
-	T    removeFirst() ;
-	T    removeLast() const;
 	
 	int  length() const;
 	bool contains(std::string) const;
@@ -68,15 +57,13 @@ class ItemList{
 	void printContrario();
 	void operator= (const ItemList&);
 
+	bool searchName(std::string);
+	void filterType(T);
 
-	bool set(int, T);
-	int  indexOf(T) const;
-	int  lastIndexOf(T) const;
-	T    remove(int);
-
-	void SortAlfabetic();
-	void SortQuant();
-	void SortPriority();
+	void swapPointers(ItemLink<T>* p1, ItemLink<T>* p2);
+	void sortAlfabetic();
+	void sortQuant();
+	void sortPriority();
 
 private:
 	ItemLink<T> *head;
@@ -85,7 +72,36 @@ private:
 };
 
 template <class T>
-void ItemList<T>::printContrario(){
+void ItemList<T>::filterType(T type){
+	ItemLink<T> *p;
+	p = head;
+	while (p!=0)
+	{
+		if (p->prioridad==type){
+			std::cout<<"Objeto: "<<p->value<<" Cantidad: "<<p->cantidad<<std::endl;
+		}
+		p=p->next;
+	}
+	
+};
+
+template <class T>
+bool ItemList<T>::searchName(std::string search){ //O(n+3), el ciclo while recorrerá todo el arreglo en el peor de los casos. k=3
+	ItemLink<T> *p;
+	p=head;
+	while (p!=0){
+		if (p->value==search){
+			return true;
+		}
+		else{
+			return false;
+		}
+		p=p->next;
+	}
+}
+
+template <class T>
+void ItemList<T>::printContrario(){ // O(n+5), en este caso, el ciclo while DEBE recorrer toda la lista.
 	ItemLink<T> *p;
 	p = tail;
 	while (p != 0) {
@@ -130,122 +146,125 @@ void ItemList<T>::print(){
 		p = p->next;
 	}
 }
+/*------------------Código de Diego Isaac Fuentes Juvera con modificaciones muy ligeras------------------*/
+template <class T>
+void ItemList<T>::swapPointers(ItemLink<T>* p1, ItemLink<T>* p2) {
+    // Intercambiar las direcciones de los dos Pokémon utilizando intercambio de apuntadores
+    ItemLink<T> *p;
+		if (p1 == p2) {
+			return;  // No se necesita intercambiar el mismo nodo
+		}
+
+		if (head == nullptr || head->next == nullptr) {
+			return; // Lista vacía o con un solo elemento, ya está "ordenada".
+		}
+
+		p = p1->next;
+		p1->next = p2->next;
+		p2->next = p;
+
+		if (p1->next != NULL){
+			p1->next->previous = p1;
+		}
+		if (p2->next != NULL){
+			p2->next->previous = p2;
+		}
+
+
+		p = p1->previous;
+		p1->previous = p2->previous;
+		p2->previous = p;
+
+		if (p1->previous != NULL){
+			p1->previous->next = p1;
+		}
+		if (p2->previous != NULL){
+			p2->previous->next = p2;
+		}
+
+		if(p1 == head){
+			head = p2;
+		}
+		else if (p2 == head){
+			head = p1;
+		};
+
+		if(p1 == tail){
+			tail = p2;
+		}
+		else if (p2 == tail){
+			tail = p1;
+		};
+	}
+/*------------------Fin del código de diego------------------*/
 
 template <class T>
-void ItemList<T>::SortQuant() {
-    ItemLink<T> *p, *q;
-    T tempData;
-    std::string tempName;
-    bool swapped;
-
-    if (head == nullptr || head->next == nullptr) {
-        return; // Lista vacía o con un solo elemento, ya está "ordenada".
-    }
-
-    do {
-        swapped = false;
-        p = head;
-
-        while (p->next != nullptr) {
-            if (p->cantidad > p->next->cantidad) {
-                // Intercambiar los datos de los nodos
-                tempData = p->cantidad;
-                p->cantidad = p->next->cantidad;
-                p->next->cantidad = tempData;
-
-                tempData = p->prioridad;
-                p->prioridad = p->next->prioridad;
-                p->next->prioridad = tempData;
-
-                tempName = p->value;
-                p->value = p->next->value;
-                p->next->value = tempName;
-
-                swapped = true;
-            }
-            p = p->next;
-        }
-        q = p;
-    } while (swapped);
-    tail = q; // Actualizar la cola de la lista
+void ItemList<T>::sortQuant() { //O(2n^3) hay 3 for's anidados, resultado en la n^3, dentro del segundo for hay otros dos,
+  ItemLink<T>* p1;				// por eso se le asigna el 2n.
+  ItemLink<T>* p2;
+  p1 = head;
+  p2 = p1->next;
+  for(int i = 0; i <=size; i++){ 
+    for (int f = 0; f <(size-i-1); f++ ) {
+			p1 = head;
+			for (int k = 0; k<i; k++){
+				p1 = p1->next;
+			}
+			p2 = p1->next;
+			for (int m = 0; m<f; m++){
+				p2 = p2->next;
+			}
+      if (p1->cantidad > p2->cantidad) {
+        swapPointers(p1, p2);
+  		}
+		}
+	}
 }
 
 template <class T>
-void ItemList<T>::SortAlfabetic() {
-    ItemLink<T> *p, *q;
-    T tempData;
-    std::string tempName;
-    bool swapped;
-
-    if (head == nullptr || head->next == nullptr) {
-        return; // Lista vacía o con un solo elemento, ya está "ordenada".
-    }
-
-    do {
-        swapped = false;
-        p = head;
-
-        while (p->next != nullptr) {
-            if (p->value > p->next->value) {
-                // Intercambiar los datos de los nodos
-                tempData = p->cantidad;
-                p->cantidad = p->next->cantidad;
-                p->next->cantidad = tempData;
-
-                tempData = p->prioridad;
-                p->prioridad = p->next->prioridad;
-                p->next->prioridad = tempData;
-
-                tempName = p->value;
-                p->value = p->next->value;
-                p->next->value = tempName;
-
-                swapped = true;
-            }
-            p = p->next;
-        }
-        q = p;
-    } while (swapped);
-    tail = q; // Actualizar la cola de la lista
+void ItemList<T>::sortAlfabetic() {
+  ItemLink<T>* p1;
+  ItemLink<T>* p2;
+  p1 = head;
+  p2 = p1->next;
+  for(int i = 0; i <=size; i++){
+    for (int f = 0; f <(size-i-1); f++ ) {
+			p1 = head;
+			for (int k = 0; k<i; k++){
+				p1 = p1->next;
+			}
+			p2 = p1->next;
+			for (int m = 0; m<f; m++){
+				p2 = p2->next;
+			}
+      if (p1->value > p2->value) {
+        swapPointers(p1, p2);
+  		}
+		}
+	}
 }
 
 template <class T>
-void ItemList<T>::SortPriority() {
-    ItemLink<T> *p, *q;
-    T tempData;
-    std::string tempName;
-    bool swapped;
-
-    if (head == nullptr || head->next == nullptr) {
-        return; // Lista vacía o con un solo elemento, ya está "ordenada".
-    }
-
-    do {
-        swapped = false;
-        p = head;
-
-        while (p->next != nullptr) {
-            if (p->prioridad > p->next->prioridad) {
-                // Intercambiar los datos de los nodos
-                tempData = p->cantidad;
-                p->cantidad = p->next->cantidad;
-                p->next->cantidad = tempData;
-
-                tempData = p->prioridad;
-                p->prioridad = p->next->prioridad;
-                p->next->prioridad = tempData;
-
-                tempName = p->value;
-                p->value = p->next->value;
-                p->next->value = tempName;
-
-                swapped = true;
-            }
-            p = p->next;
-        }
-        q = p;
-    } while (swapped);
-    tail = q; // Actualizar la cola de la lista
+void ItemList<T>::sortPriority() {
+  ItemLink<T>* p1;
+  ItemLink<T>* p2;
+  p1 = head;
+  p2 = p1->next;
+  for(int i = 0; i <=size; i++){
+    for (int f = 0; f <(size-i-1); f++ ) {
+			p1 = head;
+			for (int k = 0; k<i; k++){
+				p1 = p1->next;
+			}
+			p2 = p1->next;
+			for (int m = 0; m<f; m++){
+				p2 = p2->next;
+			}
+      if (p1->prioridad > p2->prioridad) {
+        swapPointers(p1, p2);
+  		}
+		}
+	}
 }
 
 template <class T>
@@ -277,14 +296,6 @@ bool ItemList<T>::contains(std::string val) const {
 		p = p->next;
 	}
 	return false;
-}
-
-template <class T>
-T ItemList<T>::getFirst() const{
-	if (empty()) {
-		std::cout<<"\n===|===|No existe el valor|===|===\n";
-	}
-	return head->value;
 }
 
 template <class T>
@@ -322,26 +333,6 @@ void ItemList<T>::add(std::string val, T quantity, T priority){
 		tail = newLink;
 	}
 	size++;
-}
-
-template <class T>
-T ItemList<T>::get(int index) const {
-	int pos;
-	ItemLink<T> *p;
-	if (index < 0 || index >= size) {
-		std::cout<<"===|===|Indice no valido|===|===\n";
-	}
-	if (index == 0) {
-		return getFirst();
-	}
-	p = head;
-	pos = 0;
-	while (pos != index) {
-		p = p->next;
-		pos++;
-	}
-
-	return p->value;
 }
 
 template <class T>
