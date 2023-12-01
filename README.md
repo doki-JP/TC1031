@@ -2,6 +2,11 @@
 Autor: Juan Pablo Chávez
 Matrícula: A01705408
 
+## CONSIDERACIONES
+- Al terminar de calificar, puede irse a "Ajustes" y notará la opción de borrar todos los datos. NO borrar datos antes de terminar su uso.
+- Al compilar, el programa muestra un warning en Ubuntu, no afecta en el programa y es algo exclusivo de Ubuntu/Linux.
+- El programa es sensible al input del usuario, favor de intentar insertar datos de forma correcta.
+
 ## Funcionalidad
 Este programa se asemeja al inventario de un videojuego, como Pokemon Legends Arceus, entre otros títulos, en donde puedes evidentemente guardar más objetos, ordenarlo según un criterio y puedes mostrarlo de manera ascendente y descendente, además de buscar, filtrar y eliminar todos los datos.
 ## Correcciones
@@ -38,5 +43,3 @@ Existen 6 métodos que utiliza la lista doblemente ligada:
 ### Implementa mecanismos de escritura de archivos para guardar los datos  de las estructuras de manera correcta
 - Se utiliza ofstream o Output File stream para poder generar o editar un archivo, y al agregar el siguiente parámetro "std::ios::app" nos aseguramos que no se borre accidentalmente el archivo.
 
-## Consideraciones
-- Al terminar de calificar, puede irse a "Ajustes" y notará la opción de borrar todos los datos. NO borrar datos antes de terminar su uso.
