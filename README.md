@@ -8,6 +8,7 @@ Matrícula: A01705408
 - Al terminar de calificar, puede irse a "Ajustes" y notará la opción de borrar todos los datos. NO borrar datos antes de terminar su uso.
 - Al compilar, el programa muestra un warning en Ubuntu, no afecta en el programa y es algo exclusivo de Ubuntu/Linux.
 - El programa es sensible al input del usuario, favor de intentar insertar datos de forma correcta.
+- Al ordenar mediante nombre (alfabéticamente) se le dará una mayor prioridad a las que este en mayúsculas, es decir, si se agrega un objeto con un valor "piedra", no se ordenará de una manera correcta, procure siempre escribir nombres o sustantivos con mayúscula su primera letra
 
 ## Funcionalidad
 Este programa se asemeja al inventario de un videojuego, como Pokemon Legends Arceus, entre otros títulos, en donde puedes evidentemente guardar más objetos, ordenarlo según un criterio y puedes mostrarlo de manera ascendente y descendente, además de buscar, filtrar y eliminar todos los datos.
