@@ -86,7 +86,7 @@ std::cout<<"\t 0. Cerrar\n\t 1. Mostrar Inventario completo\n\t 2. Agregar Item\
                 }
             }
             else if(menu==2){
-                std::cout<<"Segun que tipo quiere buscar?: ";
+                std::cout<<"Segun que tipo quiere buscar?:\n1. Herramientas\n2. Utilidad (Arrojadizo)\n3. Comida\n: ";
                 std::cin>>type;
                 Inventory.filterType(type);
             }
