@@ -79,7 +79,10 @@ std::cout<<"\t 0. Cerrar\n\t 1. Mostrar Inventario completo\n\t 2. Agregar Item\
                 std::cout<<"Segun que nombre quiere buscar?: ";
                 std::cin>>name;
                 if(Inventory.searchName(name)==true){
-                    std::cout<<"Si existe el elemento"<<std::endl;
+                    std::cout<<"Si existe el elemento:"<<name<<std::endl;
+                }
+                else{
+                    std::cout<<"El elemento:"<<name<<" no fue encontrado."<<std::endl;
                 }
             }
             else if(menu==2){
