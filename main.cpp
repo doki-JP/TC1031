@@ -1,8 +1,6 @@
 #include "Item.h"
 #include <fstream>
 
-//Posibilidad de añadir la opción tirar (el item) e implementar un algortimo de búsqueda para eliminar el objeto
-//Añadir una introducción tipo videojuego, ej. bienvenido, hoy haremos tu inventario.... (debe ir más allá en cuanto a funcionalidad)
 int main() {
     std::string name;
     int cant, type, orden, menu;
