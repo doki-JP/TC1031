@@ -2,6 +2,8 @@
 Autor: Juan Pablo Chávez
 Matrícula: A01705408
 
+## Video de funcionamiento en Windows
+- https://youtu.be/BoC6RJUqMUQ
 ## CONSIDERACIONES
 - Al terminar de calificar, puede irse a "Ajustes" y notará la opción de borrar todos los datos. NO borrar datos antes de terminar su uso.
 - Al compilar, el programa muestra un warning en Ubuntu, no afecta en el programa y es algo exclusivo de Ubuntu/Linux.
