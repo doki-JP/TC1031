@@ -74,7 +74,6 @@ class ItemList{
 	bool searchName(std::string);
 	void filterType(T);
 
-	//void swapPtr(ItemLink<T>* p1, ItemLink<T>* p2);
 	void sortAlfabetic();
 	void sortQuant();
 	void sortPriority();
