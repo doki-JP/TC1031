@@ -106,9 +106,6 @@ bool ItemList<T>::searchName(std::string search){ //O(n+3), el ciclo while recor
 		if (p->value==search){
 			return true;
 		}
-		else{
-			return false;
-		}
 		p=p->next;
 	}
 }
