@@ -1,6 +1,5 @@
 #ifndef ITEM_H
 #define ITEM_H
-
 /*
 Referencias: en este proyecto existe una funciones que no son de mi autoría, que es el sort utilizado, 
 se modificó para que se pudiera utilizar de acuerdo a las necesidades de mi proyecto mas no fue un cambio radical, es por esto que los
